@@ -112,6 +112,7 @@ export default function Cursor() {
                 y: '-50%',
                 backgroundColor: 'white',
                 mixBlendMode: 'difference',
+                willChange: 'transform'
             }}
             animate={{
                 width: size.width,
