@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Plus, ArrowUpRight } from 'lucide-react'
 
 export default function Hero() {
@@ -34,9 +35,9 @@ export default function Hero() {
               <div className="absolute -inset-4 border border-[#282828] rounded-2xl" />
               <div className="absolute -inset-8 border border-[#282828] rounded-3xl opacity-50" />
               
-              <button 
-                type="button"
-                className="group relative w-full bg-[#1C1C1C] hover:bg-[#232323] border border-[#282828] hover:border-[#FFC799] rounded-xl p-8 transition-all duration-500 card-lift orange-glow"
+              <Link 
+                href="/new"
+                className="group relative w-full block bg-[#1C1C1C] hover:bg-[#232323] border border-[#282828] hover:border-[#FFC799] rounded-xl p-8 transition-all duration-500 card-lift orange-glow"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -55,7 +56,7 @@ export default function Hero() {
                 <p className="text-sm text-[#A0A0A0] mt-2">
                   Begin your next presentation
                 </p>
-              </button>
+              </Link>
             </div>
           </div>
         </div>
