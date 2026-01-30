@@ -5,8 +5,8 @@ const sql = postgres(process.env.POSTGRES_URL!, {
 })
 
 export async function seed() {
-  // Create table with raw SQL
-  const createTable = await sql`
+  // Create profiles table
+  const createProfilesTable = await sql`
       CREATE TABLE IF NOT EXISTS profiles (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
@@ -16,6 +16,28 @@ export async function seed() {
       );
   `
   console.log(`Created "profiles" table`)
+
+  // Create presentations table
+  const createPresentationsTable = await sql`
+      CREATE TABLE IF NOT EXISTS presentations (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        icon VARCHAR(255),
+        picture VARCHAR(255)
+      );
+  `
+  console.log(`Created "presentations" table`)
+
+  // Create slides table
+  const createSlidesTable = await sql`
+      CREATE TABLE IF NOT EXISTS slides (
+        id SERIAL PRIMARY KEY,
+        "presentationId" INTEGER NOT NULL REFERENCES presentations(id) ON DELETE CASCADE,
+        "slideContent" TEXT NOT NULL
+      );
+  `
+  console.log(`Created "slides" table`)
 
   const profiles = await Promise.all([
     sql`
@@ -37,7 +59,9 @@ export async function seed() {
   console.log(`Seeded ${profiles.length} users`)
 
   return {
-    createTable,
+    createProfilesTable,
+    createPresentationsTable,
+    createSlidesTable,
     insertedUsers: profiles,
   }
 }
