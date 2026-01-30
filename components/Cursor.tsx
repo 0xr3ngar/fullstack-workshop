@@ -16,10 +16,62 @@ interface ExtendedDocument {
 }
 
 const INTERACTIVE_SELECTOR = 'button, a, [role="button"], input, textarea, select'
+const TEXT_INPUT_SELECTOR = '#slide-editor'
 
 function isOverInteractive(x: number, y: number): boolean {
     const element = document.elementFromPoint(x, y)
+
+    if (element?.closest(TEXT_INPUT_SELECTOR)) return false
+
     return !!element?.closest(INTERACTIVE_SELECTOR)
+}
+
+function isOverTextInTextarea(x: number, y: number): { isOver: boolean; height: number } {
+    const element = document.elementFromPoint(x, y)
+    const textarea = element?.closest(TEXT_INPUT_SELECTOR) as HTMLTextAreaElement | null
+
+    if (!textarea) return { isOver: false, height: 0 }
+
+    const content = textarea.value
+    if (!content.trim()) return { isOver: false, height: 0 }
+
+    const computedStyle = window.getComputedStyle(textarea)
+    const lineHeight = parseFloat(computedStyle.lineHeight) || parseFloat(computedStyle.fontSize) * 1.5
+    const paddingTop = parseFloat(computedStyle.paddingTop)
+    const paddingLeft = parseFloat(computedStyle.paddingLeft)
+    const paddingRight = parseFloat(computedStyle.paddingRight)
+
+    const rect = textarea.getBoundingClientRect()
+    const relativeX = x - rect.left
+    const relativeY = y - rect.top
+
+    // Check if cursor is within the padded content area
+    if (relativeX < paddingLeft || relativeX > rect.width - paddingRight) {
+        return { isOver: false, height: 0 }
+    }
+
+    // Calculate which line the cursor is on
+    const lineIndex = Math.floor((relativeY - paddingTop) / lineHeight)
+    const lines = content.split('\n')
+
+    // Check if cursor is on a line that has content
+    if (lineIndex < 0 || lineIndex >= lines.length) {
+        return { isOver: false, height: 0 }
+    }
+
+    const currentLine = lines[lineIndex]
+    if (!currentLine.length) return { isOver: false, height: 0 }
+
+    // Estimate character width and check if cursor is within text bounds
+    const fontSize = parseFloat(computedStyle.fontSize)
+    const charWidth = fontSize * 0.6 // Approximate for monospace
+    const lineWidth = currentLine.length * charWidth
+
+    if (relativeX > paddingLeft + lineWidth) {
+        return { isOver: false, height: 0 }
+    }
+
+    return { isOver: true, height: lineHeight }
 }
 
 function getCaretRange(x: number, y: number): Range | null {
@@ -43,6 +95,10 @@ function isPointInRect(x: number, y: number, rect: DOMRect): boolean {
 }
 
 function getTextHeight(x: number, y: number): number | null {
+    // Skip if we're over the slide editor (handled separately)
+    const element = document.elementFromPoint(x, y)
+    if (element?.closest(TEXT_INPUT_SELECTOR)) return null
+
     const range = getCaretRange(x, y)
     if (!range || range.startContainer.nodeType !== Node.TEXT_NODE) return null
 
@@ -81,6 +137,13 @@ export default function Cursor() {
 
             if (isOverInteractive(x, y)) {
                 setState('interactive')
+                return
+            }
+
+            const textInput = isOverTextInTextarea(x, y)
+            if (textInput.isOver) {
+                setState('text')
+                setTextHeight(textInput.height)
                 return
             }
 
