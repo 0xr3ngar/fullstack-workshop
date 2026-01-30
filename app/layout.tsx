@@ -1,8 +1,9 @@
 import './globals.css'
 import { Instrument_Serif, DM_Sans } from 'next/font/google'
 import Cursor from '@/components/Cursor'
+import { Metadata } from 'next'
 
-export const metadata = {
+export const metadata: Metadata = {
     metadataBase: new URL('https://postgres-drizzle.vercel.app'),
     title: 'Vesper — Presentation Studio',
     description: 'Craft beautiful presentations with markdown-powered slides',
