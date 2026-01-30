@@ -4,13 +4,14 @@
 
 :root {
   /* Vesper Theme - Exact Colors */
-  --vesper-bg: #101010;
-  --vesper-bg-elevated: #161616;
-  --vesper-bg-card: #1C1C1C;
-  --vesper-border: #282828;
+  --vesper-bg: #0A0A0A;
+  --vesper-bg-elevated: #111111;
+  --vesper-bg-card: #161616;
+  --vesper-border: #222222;
   
   /* Primary Accents */
   --vesper-mint: #99FFE4;
+  --vesper-mint-dim: #5FCFB8;
   --vesper-mint-transparent: rgba(153, 255, 228, 0.15);
   
   --vesper-orange: #FFC799;
@@ -23,18 +24,27 @@
   
   /* Text Colors */
   --vesper-text: #FFFFFF;
-  --vesper-text-secondary: #A0A0A0;
-  --vesper-text-muted: #707070;
+  --vesper-text-secondary: #888888;
+  --vesper-text-muted: #555555;
   
   /* Selection */
   --vesper-selection: rgba(255, 255, 255, 0.15);
-  --vesper-list-hover: #282828;
-  --vesper-list-active: #232323;
+  --vesper-list-hover: #1A1A1A;
+  --vesper-list-active: #151515;
 }
 
 body {
   color: var(--vesper-text);
   background-color: var(--vesper-bg);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.font-body {
+  font-family: var(--font-body), system-ui, sans-serif;
 }
 
 * {
@@ -249,4 +259,14 @@ body {
 
 .text-reveal {
   animation: textReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  animation: gradient 3s ease infinite;
 }

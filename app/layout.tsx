@@ -1,31 +1,37 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Instrument_Serif, DM_Sans } from 'next/font/google'
 import Cursor from '@/components/Cursor'
 
 export const metadata = {
-  metadataBase: new URL('https://postgres-drizzle.vercel.app'),
-  title: 'Postgres Demo with Drizzle',
-  description:
-    'A simple Next.js app with a Postgres database and Drizzle as the ORM',
+    metadataBase: new URL('https://postgres-drizzle.vercel.app'),
+    title: 'Vesper — Presentation Studio',
+    description: 'Craft beautiful presentations with markdown-powered slides',
 }
 
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-  display: 'swap',
+const instrumentSerif = Instrument_Serif({
+    variable: '--font-display',
+    subsets: ['latin'],
+    weight: '400',
+    display: 'swap',
+})
+
+const dmSans = DM_Sans({
+    variable: '--font-body',
+    subsets: ['latin'],
+    display: 'swap',
 })
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode
 }) {
-  return (
-    <html lang="en">
-      <body className={inter.variable}>
-        <Cursor />
-        {children}
-      </body>
-    </html>
-  )
+    return (
+        <html lang="en">
+            <body className={`${instrumentSerif.variable} ${dmSans.variable} font-body`}>
+                <Cursor />
+                {children}
+            </body>
+        </html>
+    )
 }
