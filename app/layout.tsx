@@ -1,5 +1,6 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import Cursor from '@/components/Cursor'
 
 export const metadata = {
   metadataBase: new URL('https://postgres-drizzle.vercel.app'),
@@ -21,7 +22,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.variable}>{children}</body>
+      <body className={inter.variable}>
+        <Cursor />
+        {children}
+      </body>
     </html>
   )
 }
