@@ -37,6 +37,10 @@ body {
   background-color: var(--vesper-bg);
 }
 
+* {
+  cursor: none !important;
+}
+
 /* Grain texture overlay */
 .grain-overlay {
   position: fixed;
